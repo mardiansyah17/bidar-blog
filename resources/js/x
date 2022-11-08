@@ -1,0 +1,111 @@
+import React, { Component } from "react";
+import axios from "axios";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import ImageResize from "@ckeditor/ckeditor5-image/src/imageresize";
+// import ImageResizeEditing from "@ckeditor/ckeditor5-image/src/imageresize/imageresizeediting";
+// import ImageResizeHandles from "@ckeditor/ckeditor5-image/src/imageresize/imageresizehandles";
+
+export default function Tes(props) {
+    const { token } = props;
+    function uploadAdapter(loader) {
+        return {
+            upload: () => {
+                return new Promise((resolve, reject) => {
+                    const body = new FormData();
+                    loader.file.then((file) => {
+                        axios
+                            .post(
+                                "/upload-image",
+                                { img: file },
+                                {
+                                    headers: {
+                                        "Content-Type": "multipart/form-data",
+                                    },
+                                }
+                            )
+                            .then((res) => console.log(res));
+                    });
+                });
+            },
+        };
+    }
+
+    function uploadPlugin(editor) {
+        editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+            return uploadAdapter(loader);
+        };
+    }
+
+    return (
+        <div className="">
+            <CKEditor
+                editor={ClassicEditor}
+                config={{
+                    extraPlugins: [uploadPlugin, ImageResize],
+                }}
+            />
+        </div>
+    );
+}
+
+
+
+   const [editorVal, setEditorVal] = useState();
+    const { errors } = usePage().props;
+    const [title, setTitle] = useState();
+    const [category_id, setCategory] = useState("");
+    const [content, setContent] = useState("<p></p>");
+
+    useEffect(() => {
+        let blog = JSON.parse(localStorage.getItem("blog"));
+        if (blog) {
+            setTitle(blog.title);
+            setCategory(blog.category_id);
+            const html = blog.content;
+            setContent(html);
+            const contentBlock = htmlToDraft(html);
+            if (contentBlock) {
+                const contentState = ContentState.createFromBlockArray(
+                    contentBlock.contentBlocks
+                );
+                const editorState = EditorState.createWithContent(contentState);
+                setEditorVal(editorState);
+            }
+        }
+    }, []);
+    function titleHandler(e) {
+        errors.title = null;
+        let title = e.target.value;
+        setTitle(title);
+        let updateBlog = {
+            title,
+            content,
+            category_id,
+        };
+        localStorage.setItem("blog", JSON.stringify(updateBlog));
+    }
+    function textEditorValueHandler(e) {
+        errors.content = null;
+        let strContent = draftToHtmlPuri(convertToRaw(e.getCurrentContent()));
+
+        let updateBlog = {
+            title,
+            content: strContent,
+            category_id,
+        };
+        localStorage.setItem("blog", JSON.stringify(updateBlog));
+        setContent(strContent);
+        setEditorVal(e);
+        console.log(draftToHtml(convertToRaw(e.getCurrentContent())));
+    }
+    function resetContent() {
+        let updateBlog = {
+            title,
+            content: "<p></p>",
+            category_id,
+        };
+        localStorage.setItem("blog", JSON.stringify(updateBlog));
+        setContent("<p></p>");
+        setEditorVal("");
+    }

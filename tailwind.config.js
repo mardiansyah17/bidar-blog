@@ -1,0 +1,27 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
+
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+    content: [
+        "./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php",
+        "./storage/framework/views/*.php",
+        "./resources/views/**/*.blade.php",
+        "./resources/js/**/*.jsx",
+    ],
+    darkMode: "class",
+    theme: {
+        extend: {
+            fontFamily: {
+                sans: ["Nunito", ...defaultTheme.fontFamily.sans],
+            },
+            colors: {
+                main: {
+                    50: "#F59C4A",
+                    100: "#FF7B01",
+                },
+            },
+        },
+    },
+
+    plugins: [require("@tailwindcss/forms"), require("daisyui")],
+};
