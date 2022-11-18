@@ -23,5 +23,12 @@ module.exports = {
         },
     },
 
-    plugins: [require("@tailwindcss/forms"), require("daisyui")],
+    plugins: [
+        require("@tailwindcss/forms"),
+        require("daisyui"),
+        require("tailwind-scrollbar"),
+    ],
+    variants: {
+        scrollbar: ["rounded"],
+    },
 };

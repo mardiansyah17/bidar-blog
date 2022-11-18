@@ -25,10 +25,15 @@ Route::get('/', function () {
     return Inertia('Home');
 })->name('guest');
 Route::get('/all-blog', [BlogController::class, 'index'])->name('all-blog');
+Route::get('/categories', function () {
+    return Inertia::render('Categories');
+})->name('categories');
+Route::get('/create-blog', [BlogController::class, 'create']);
+Route::post('/upload-blog', [BlogController::class, 'store']);
 
 Route::post('/upload-image', function (Request $request) {
     // dd($request->all());
-    $path = $request->file('img')->store('images');
+    $path = $request->file('img')->store('post-images');
     return  response()->json(['path' => "/storage/" . $path], 200);
 });
 

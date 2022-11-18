@@ -1,5 +1,3 @@
-import axios from "axios";
-import { url } from "@/Pages/PostBlog";
 export const uploadCallback = (file, callback) => {
     console.log(file);
     return new Promise((resolve, reject) => {
@@ -15,7 +13,9 @@ export const uploadCallback = (file, callback) => {
                 }
             )
             .then((e) => {
-                resolve({ data: { link: `${url}/storage/${e.data.path}` } });
+                resolve({
+                    data: { link: `${url}/storage/${e.data.path}` },
+                });
             });
     });
 };
