@@ -3,8 +3,8 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import NavLink from "./NavLink";
-import cover from "/public/storage/images/health.jpg";
-export default function CardBlog() {
+import cover from "/public/assets/img/images/0V7ShO8dW72yAuTLD4TPLnustKAg8vAnHadoQFzu.jpg";
+export default function CardBlog({ title, slug }) {
     const [loadImage, setLoadImage] = useState(true);
     function handleImageLoad() {}
     useEffect(() => {}, []);
@@ -25,12 +25,12 @@ export default function CardBlog() {
                     }}
                 />
                 <h1 className="text-lg leading-5 mt-3 text-center  font-semibolzd mb-3 ">
-                    Ini adalah sebuah judul hahahah
+                    {title}
                 </h1>
 
                 <div className="flex justify-center  ">
                     <Link
-                        href={`/blog/$slug`}
+                        href={`/blog/${slug}`}
                         className="bg-orange-500 rounded-lg hover:bg-orange-600 active:bg-orange-500 text-white px-2 py-1"
                     >
                         Baca

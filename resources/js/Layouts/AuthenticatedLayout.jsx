@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import Nav from "@/Components/Nav";
-import { Link } from "@inertiajs/inertia-react";
 import DrawerItemMenu from "@/Components/DrawerItemMenu";
+import Button from "@/Components/Button";
+import profile from "/public/assets/img/images/mark.jpg";
+
 export default function Authenticated({ auth, header, children }) {
     const [openDrawer, setOpenDrawer] = useState(false);
     function drawerHandler() {
@@ -25,6 +26,18 @@ export default function Authenticated({ auth, header, children }) {
                         className="drawer-overlay"
                     ></label>
                     <div className="flex flex-col  p-4 w-80 bg-base-100 text-base-content">
+                        {auth.user ? (
+                            <div className="flex items-center">
+                                <img
+                                    src={profile}
+                                    className="w-14 h-14 rounded-full mr-3"
+                                    alt=""
+                                />
+                                <h2>Muhammad Mardiansyah</h2>
+                            </div>
+                        ) : (
+                            <Button url={"/login"} title="Login" />
+                        )}
                         <DrawerItemMenu
                             title="Home"
                             routeName={"guest"}

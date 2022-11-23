@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 
 export default function AllBlog(props) {
+    console.log(props);
     return (
         <AuthenticatedLayout auth={props.auth} errors={props.errors}>
             <Nav />
@@ -35,12 +36,15 @@ export default function AllBlog(props) {
                 </div>
             </div>
             <div className="flex flex-wrap justify-center space-x-3 mt-5 ">
-                <CardBlog />
-                <CardBlog />
-                <CardBlog />
-                <CardBlog />
-                <CardBlog />
-                <CardBlog />
+                {props.blogs.map((blog) => {
+                    return (
+                        <CardBlog
+                            key={`blogId.${blog.id}`}
+                            title={blog.title}
+                            slug={blog.slug}
+                        />
+                    );
+                })}
             </div>
         </AuthenticatedLayout>
     );

@@ -19,8 +19,8 @@ class BlogController extends Controller
 {
     public function index()
     {
+        ddd('');
         $blog = Blog::all();
-        // dd($blog);
         return Inertia::render('AllBlog', [
             'blogs' => $blog
         ]);
@@ -28,7 +28,7 @@ class BlogController extends Controller
 
     public function show(Blog $blog)
     {
-        // dd(Route::getCurrentRoute()->uri());
+
         return Inertia::render('Blog', [
             'blog' => $blog,
             'route' => ["blog/{blog}"]
@@ -37,27 +37,24 @@ class BlogController extends Controller
 
     public function create()
     {
-
         return Inertia::render('PostBlog', [
-            'categories' => Category::all()
+            'categories' =>
+            Category::all()
         ]);
     }
-
     public function store(Request $request)
     {
-
         $blog =   $request->validate(
             [
                 'title' => ['required', 'min:5', 'max:50'],
                 'category_id' => ['required'],
-                'content' => ['required']
+                'content' => ['required'],
+                'description' => ['required']
             ]
         );
         $slug = SlugService::createSlug(Blog::class, 'slug', $request->title);
-
         $blog['user_id'] = Auth()->id();
         $blog['slug'] = $slug;
-        $blog['cover'] = $request->cover;
         Blog::create($blog);
 
         return redirect("/blog/" .  $slug)->with('success', true);
@@ -70,5 +67,27 @@ class BlogController extends Controller
         return Inertia::render('MyBlog', [
             'blogs' => $blogs
         ]);
+    }
+
+    public function edit(Blog $blog)
+    {
+        return Inertia::render('EditBlog', [
+            'blog' => $blog,
+            'categories' => Category::all()
+        ]);
+    }
+
+    public function update(Blog $blog, Request $request)
+    {
+        $updateBlog =   $request->validate(
+            [
+                'title' => ['required', 'min:5', 'max:50'],
+                'category_id' => ['required'],
+                'content' => ['required'],
+                'description' => ['required']
+            ]
+        );
+        Blog::where('slug', $blog->slug)->update($updateBlog);
+        return redirect('/blog/' . $blog->slug);
     }
 }

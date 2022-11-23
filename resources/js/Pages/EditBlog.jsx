@@ -9,11 +9,11 @@ import Button from "@/Components/Button";
 import SideBar from "@/Components/SideBar";
 import { buttonToolbar } from "@/utils/buttonList";
 import { onImageUploadBefore } from "@/utils/onImageUploadBefore";
-import ErrorModal from "@/Components/ErrorModal";
 import { useEffect } from "react";
+import ErrorModal from "@/Components/ErrorModal";
 
-export default function PostBlog(props) {
-    const [content, setContent] = useState("");
+export default function EditBlog(props) {
+    const [content, setContent] = useState(props.blog.content);
     const [errors, setError] = useState([]);
     useEffect(() => {
         setError(Object.values(props.errors));
@@ -24,9 +24,10 @@ export default function PostBlog(props) {
             <Nav />
             <ErrorModal title={"Gagal posting blog"} error={errors} />
             <SideBar
-                pathButton={"/upload-blog"}
+                blog={props.blog}
                 categories={props.categories}
                 content={content}
+                pathButton={`/edit-blog/${props.blog.slug}`}
             />
             <div className="flex">
                 <div className="p-3 h-full  w-full">
@@ -35,6 +36,7 @@ export default function PostBlog(props) {
                             buttonList: buttonToolbar,
                             showPathLabel: false,
                             height: "70vh",
+                            value: content,
                         }}
                         onImageUploadBefore={onImageUploadBefore}
                         onChange={(e) => {

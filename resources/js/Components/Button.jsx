@@ -13,7 +13,7 @@ export default function Button({ title, url, className, method, data }) {
                 </Link>
             ) : (
                 <Link
-                    href={"/upload-blog"}
+                    href={url}
                     method={method}
                     data={data}
                     as="button"

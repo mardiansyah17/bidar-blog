@@ -1,15 +1,12 @@
 import React from "react";
 import bidarBlogLogo from "../../../public/assets/img/logo-bidar-blog.png";
-import NavLink from "./../../../vendor/laravel/breeze/stubs/inertia-react/resources/js/Components/NavLink";
-import Dropdown from "./../../../vendor/laravel/breeze/stubs/inertia-react/resources/js/Components/Dropdown";
-import { Link } from "@inertiajs/inertia-react";
-import ResponsiveNavLink from "./../../../vendor/laravel/breeze/stubs/inertia-react/resources/js/Components/ResponsiveNavLink";
+import { Link, usePage } from "@inertiajs/inertia-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import Route from "./../../../vendor/tightenco/ziggy/src/js/Route";
 import Button from "./Button";
-export default function Nav({ auth, drawerHandler }) {
+export default function Nav({ drawerHandler }) {
     let currentRoute = route().current();
+    const { auth } = usePage().props;
     return (
         <div className="navbar justify-between sm:justify-start  px-10 bg-transparent shadow-sm border-b border-gray-200">
             <Link href="/" className="mr-4">
@@ -54,10 +51,44 @@ export default function Nav({ auth, drawerHandler }) {
                         <Link>Tentang kami</Link>
                     </li>
                 </ul>
-                <div className="hidden">
-                    <Button title={"Buat Blog"} url="/create-blog" />
-                </div>
             </div>
+            {/*  */}
+            {auth.user ? (
+                <div className="dropdown dropdown-end hidden sm:block">
+                    <label
+                        tabIndex={0}
+                        className="btn btn-ghost btn-circle avatar"
+                    >
+                        <div className="w-10 rounded-full">
+                            <img src="https://placeimg.com/80/80/people" />
+                        </div>
+                    </label>
+                    <ul
+                        tabIndex={0}
+                        className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+                    >
+                        <li>
+                            <Link className="justify-between">Profile</Link>
+                        </li>
+                        <li>
+                            <Link href={`/my-blog/${auth.user.id}`}>
+                                Blog saya
+                            </Link>
+                        </li>
+                        <li>
+                            <Link as="button" method="post" href="/logout">
+                                Logout
+                            </Link>
+                        </li>
+                    </ul>
+                </div>
+            ) : (
+                <div className="hidden sm:block">
+                    <Button url={"/login"} title="Login" />
+                </div>
+            )}
+            {/*  */}
+
             <label htmlFor="my-drawer" className="drawer-overlay sm:hidden">
                 <FontAwesomeIcon
                     icon={faBars}

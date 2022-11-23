@@ -1,13 +1,8 @@
 <?php
 
 use App\Http\Controllers\BlogController;
-use App\Http\Controllers\NewsController;
-use App\Http\Controllers\UserController;
-use Illuminate\Foundation\Application;
-use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 /*
@@ -24,19 +19,25 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return Inertia('Home');
 })->name('guest');
+
 Route::get('/all-blog', [BlogController::class, 'index'])->name('all-blog');
 Route::get('/categories', function () {
     return Inertia::render('Categories');
 })->name('categories');
-Route::get('/create-blog', [BlogController::class, 'create']);
-Route::post('/upload-blog', [BlogController::class, 'store']);
+Route::get('/blog/{blog}', [BlogController::class, 'show']);
 
-Route::post('/upload-image', function (Request $request) {
-    // dd($request->all());
-    $path = $request->file('img')->store('post-images');
-    return  response()->json(['path' => "/storage/" . $path], 200);
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/create-blog', [BlogController::class, 'create']);
+    Route::post('/upload-blog', [BlogController::class, 'store']);
+    Route::get('/my-blog/{user}', [BlogController::class, 'userBlog']);
+    Route::get('/edit-blog/{blog}', [BlogController::class, 'edit']);
+    Route::post('/upload-image', function (Request $request) {
+        // dd($request->all());
+        $path = $request->file('img')->store('post-images');
+        return  response()->json(['path' => "/storage/" . $path], 200);
+    });
+    Route::post('/edit-blog/{blog}', [BlogController::class, 'update']);
 });
-
-
 
 require __DIR__ . '/auth.php';
