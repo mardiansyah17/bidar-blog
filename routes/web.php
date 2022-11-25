@@ -33,7 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/my-blog/{user}', [BlogController::class, 'userBlog']);
     Route::get('/edit-blog/{blog}', [BlogController::class, 'edit']);
     Route::post('/upload-image', function (Request $request) {
-        // dd($request->all());
+        dd($request->file('img'));
         $path = $request->file('img')->store('post-images');
         return  response()->json(['path' => "/storage/" . $path], 200);
     });

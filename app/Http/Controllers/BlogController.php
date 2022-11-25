@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
@@ -19,7 +20,7 @@ class BlogController extends Controller
 {
     public function index()
     {
-        ddd('');
+        dd(DB::table('users')->get());
         $blog = Blog::all();
         return Inertia::render('AllBlog', [
             'blogs' => $blog
@@ -79,6 +80,7 @@ class BlogController extends Controller
 
     public function update(Blog $blog, Request $request)
     {
+
         $updateBlog =   $request->validate(
             [
                 'title' => ['required', 'min:5', 'max:50'],

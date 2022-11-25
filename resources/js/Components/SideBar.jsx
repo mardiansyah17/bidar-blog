@@ -1,9 +1,13 @@
-import { faGears, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faGears, faUpload, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faSquarePlus } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
+import { Cropper } from "react-advanced-cropper";
 import Button from "./Button";
 import InputSelect from "./InputSelect";
 import InputText from "./InputText";
+import DropZoneComponent from "./DropZoneComponent";
+import { Link } from "@inertiajs/inertia-react";
 
 const SideBar = ({ categories, content, blog, pathButton }) => {
     const [showSidebar, setShowSidebar] = useState(false);
@@ -23,7 +27,11 @@ const SideBar = ({ categories, content, blog, pathButton }) => {
             }));
         }
     }, [content]);
-
+    const [image, setImage] = useState();
+    const [imgCrop, setImgCrop] = useState();
+    function onDrop(file) {
+        setImage(URL.createObjectURL(file[0]));
+    }
     return (
         <>
             {showSidebar ? (
@@ -58,6 +66,38 @@ const SideBar = ({ categories, content, blog, pathButton }) => {
                         }}
                         placeholder={"Judul"}
                     />
+
+                    {/* {image ? (
+                        <div className="">
+                            <Cropper
+                                onChange={(e) =>
+                                    console.log(e.getCanvas().toDataURL())
+                                }
+                                src={image}
+                                style={{
+                                    height: 200,
+                                }}
+                                className={"cropper my-3 mx-7"}
+                            />
+
+                            <div className="mx-auto w-fit">
+                                <Link
+                                    method="post"
+                                    href="/upload-image"
+                                    data={{ img: imgCrop }}
+                                    className="px-3 py-2 mr-3 bg-orange-500 text-white rounded-lg"
+                                >
+                                    Upload
+                                </Link>
+                                <button className="px-3 py-2 bg-red-500 text-white rounded-lg">
+                                    cancel
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                        <DropZoneComponent onDrop={onDrop} />
+                    )} */}
+
                     <InputSelect
                         value={blogData.category_id}
                         categories={categories}
