@@ -24,7 +24,11 @@ export default function Blog(props) {
                     <small className="text-xs sm:text-sm lg:text-lg px-10">
                         <a href="">Muhammad Mardiansyah </a>| 18 November 2022
                     </small>
-                    <img src={gambar} className="w-[60%] mx-auto mt-3" alt="" />
+                    <img
+                        src={blog.cover_url}
+                        className="w-[60%] mx-auto mt-3"
+                        alt=""
+                    />
                     <div
                         className="mt-3 px-10"
                         dangerouslySetInnerHTML={{ __html: blog.content }}

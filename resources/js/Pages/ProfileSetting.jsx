@@ -1,34 +1,101 @@
 import React from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
+import avatar from "/public/assets/img/avatar.jpg";
+import Nav from "@/Components/Nav";
+import { useState } from "react";
+import InputText from "@/Components/InputText";
+import axios from "axios";
 const ProfileSetting = (props) => {
+    const { auth } = props;
+    const [edit, setEdit] = useState(true);
+    const [user, setUser] = useState({
+        email: auth.user.email,
+        name: auth.user.name,
+        username: auth.user.username,
+    });
+
+    function saveHandler() {
+        axios.post("/update-profile", { user }).then((res) => {
+            setUser(res.data.user);
+            setEdit(false);
+        });
+    }
     return (
         <AuthenticatedLayout auth={props.auth} errors={props.errors}>
-            <div className="flex flex-col items-center w-full">
-                <header className="">
-                    <div className="w-24 h-24 relative">
-                        <img
-                            src="http://127.0.0.1:8000/storage/images/1ufcTjfXHgxJQe9Z0ChqE03PAJpGeYVVAdkhhtvN.png"
-                            alt=""
-                            className="w-full h-full  rounded-full "
-                        />
-                        <FontAwesomeIcon
-                            icon={faPen}
-                            className="absolute bottom-0 right-0 text-white bg-black bg-opacity-30 rounded-full p-3"
-                        />
-                    </div>
-                </header>
-                <div className="mt-5">
-                    <div className="w-full">
-                        <input
-                            type="text"
-                            placeholder="Nama Lengkap"
-                            className=""
-                        />
-                        <FontAwesomeIcon icon={faPen} className="ml-3" />
-                    </div>
+            <Nav />
+            <header className="flex flex-col items-center mt-3">
+                <img
+                    src={avatar}
+                    alt=""
+                    className="border border-gray-500 rounded-full w-32"
+                />
+                <div className="">
+                    {!edit ? (
+                        <button
+                            onClick={() => setEdit(true)}
+                            className="mt-3 px-3 py-2 bg-orange-500 text-white rounded-lg"
+                        >
+                            Edi profile
+                        </button>
+                    ) : (
+                        <button
+                            onClick={saveHandler}
+                            className="mt-3 px-3 py-2 bg-orange-500 text-white rounded-lg"
+                        >
+                            Simpan
+                        </button>
+                    )}
+                    <button className="mt-3 ml-2 px-3 py-2 bg-orange-500 text-white rounded-lg">
+                        Ganti password
+                    </button>
                 </div>
+            </header>
+            <div className="mt-5 flex justify-around w-full sm:w-3/4 sm:mx-auto lg:w-2/4 font-medium">
+                {!edit ? (
+                    <>
+                        <ul className="space-y-3">
+                            <li>Alamat email</li>
+                            <li>Nama lengkap</li>
+                            <li>Username</li>
+                        </ul>
+                        <ul className="space-y-3">
+                            <li>{user.email}</li>
+                            <li>{user.name}</li>
+                            <li>{user.username}</li>
+                        </ul>
+                    </>
+                ) : (
+                    <ul className="flex flex-col items-center w-full space-y-3">
+                        <InputText
+                            value={user.email}
+                            valueHandler={(e) =>
+                                setUser((data) => ({
+                                    ...data,
+                                    email: e.target.value,
+                                }))
+                            }
+                        />
+
+                        <InputText
+                            value={user.name}
+                            valueHandler={(e) =>
+                                setUser((data) => ({
+                                    ...data,
+                                    name: e.target.value,
+                                }))
+                            }
+                        />
+                        <InputText
+                            value={user.username}
+                            valueHandler={(e) =>
+                                setUser((data) => ({
+                                    ...data,
+                                    username: e.target.value,
+                                }))
+                            }
+                        />
+                    </ul>
+                )}
             </div>
         </AuthenticatedLayout>
     );

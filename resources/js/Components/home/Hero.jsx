@@ -14,7 +14,7 @@ export default function Hero() {
                     <h1 className="text-main-100">BidarBlog</h1>
                 </div>
                 <div className="flex justify-center lg:text-xl mt-3 text-center space-x-3">
-                    <Button title={"Baca Blog sekarang"} />
+                    <Button title={"Baca Blog sekarang"} url="/all-blog" />
                     <Button title={"Buat Blog sekarang"} url="/create-blog" />
                 </div>
             </div>

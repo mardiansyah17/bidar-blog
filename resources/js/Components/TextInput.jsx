@@ -9,6 +9,7 @@ export default function TextInput({
     required,
     isFocused,
     handleChange,
+    placeholder,
 }) {
     const input = useRef();
 
@@ -24,6 +25,7 @@ export default function TextInput({
                 type={type}
                 name={name}
                 value={value}
+                placeholder={placeholder}
                 className={
                     "border-orange-500 w-[80%] mx-auto rounded-lg focus:border-orange-500"
                 }

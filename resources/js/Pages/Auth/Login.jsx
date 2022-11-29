@@ -45,11 +45,10 @@ export default function Login({ status, canResetPassword }) {
                 </div>
             )}
 
-            <form onSubmit={submit}>
+            <form onSubmit={submit} className="pt-5">
                 <div>
-                    <InputLabel forInput="email" value="Email" />
-
                     <TextInput
+                        placeholder={"Alamat email"}
                         type="text"
                         name="email"
                         value={data.email}
@@ -63,9 +62,8 @@ export default function Login({ status, canResetPassword }) {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel forInput="password" value="Password" />
-
                     <TextInput
+                        placeholder={"Password"}
                         type="password"
                         name="password"
                         value={data.password}
@@ -91,19 +89,22 @@ export default function Login({ status, canResetPassword }) {
                     </label>
                 </div>
 
-                <div className="flex items-center justify-end mt-4">
-                    {canResetPassword && (
-                        <Link
-                            href={"register"}
-                            className="underline text-sm text-gray-600 hover:text-gray-900"
-                        >
-                            Buat akun
-                        </Link>
-                    )}
+                <div className="flex items-center justify-between">
+                    <Link href="/forgot-password">Lupa password</Link>
+                    <div className="flex items-center justify-end mt-4">
+                        {canResetPassword && (
+                            <Link
+                                href={"register"}
+                                className="underline text-sm text-gray-600 hover:text-gray-900"
+                            >
+                                Buat akun
+                            </Link>
+                        )}
 
-                    <PrimaryButton className="ml-4" processing={processing}>
-                        Log in
-                    </PrimaryButton>
+                        <PrimaryButton className="ml-4" processing={processing}>
+                            Log in
+                        </PrimaryButton>
+                    </div>
                 </div>
             </form>
         </GuestLayout>

@@ -4,6 +4,7 @@ import { Link, usePage } from "@inertiajs/inertia-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import Button from "./Button";
+import avatar from "/public/assets/img/avatar.jpg";
 export default function Nav({ drawerHandler }) {
     let currentRoute = route().current();
     const { auth } = usePage().props;
@@ -30,17 +31,9 @@ export default function Nav({ drawerHandler }) {
                                 : "text-slate-700"
                         }`}
                     >
-                        <Link href="/all-blog">Semua Blog</Link>
+                        <Link href="/all-blog">Telusuri</Link>
                     </li>
-                    <li
-                        className={`${
-                            currentRoute == "categories"
-                                ? "text-orange-500"
-                                : "text-slate-700"
-                        }`}
-                    >
-                        <Link href="/categories">Kategori</Link>
-                    </li>
+
                     <li
                         className={`${
                             currentRoute == "about"
@@ -48,7 +41,7 @@ export default function Nav({ drawerHandler }) {
                                 : "text-slate-700"
                         }`}
                     >
-                        <Link>Tentang kami</Link>
+                        <Link href="/about">Tentang kami</Link>
                     </li>
                 </ul>
             </div>
@@ -59,8 +52,8 @@ export default function Nav({ drawerHandler }) {
                         tabIndex={0}
                         className="btn btn-ghost btn-circle avatar"
                     >
-                        <div className="w-10 rounded-full">
-                            <img src="https://placeimg.com/80/80/people" />
+                        <div className="w-10 rounded-full border border-gray-200">
+                            <img src={avatar} />
                         </div>
                     </label>
                     <ul
@@ -68,7 +61,9 @@ export default function Nav({ drawerHandler }) {
                         className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
                     >
                         <li>
-                            <Link className="justify-between">Profile</Link>
+                            <Link href={`/profile`} className="justify-between">
+                                Profile
+                            </Link>
                         </li>
                         <li>
                             <Link href={`/my-blog/${auth.user.id}`}>

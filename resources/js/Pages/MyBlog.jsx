@@ -15,6 +15,7 @@ const MyBlog = (props) => {
                             key={`blogId.${blog.id}`}
                             title={blog.title}
                             slug={blog.slug}
+                            cover={blog.cover_url}
                         />
                     );
                 })}

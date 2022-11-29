@@ -9,6 +9,7 @@ import { Head, Link, useForm } from "@inertiajs/inertia-react";
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: "",
+        username: "",
         email: "",
         password: "",
         password_confirmation: "",
@@ -37,11 +38,10 @@ export default function Register() {
 
     return (
         <GuestLayout>
-            <form onSubmit={submit}>
+            <form onSubmit={submit} noValidate>
                 <div>
-                    <InputLabel forInput="name" value="Name" />
-
                     <TextInput
+                        placeholder={"Nama Lengkap"}
                         type="text"
                         name="name"
                         value={data.name}
@@ -51,19 +51,27 @@ export default function Register() {
                         handleChange={onHandleChange}
                         required
                     />
-
-                    <InputError message={errors.name} className="mt-2" />
                 </div>
-
                 <div className="mt-4">
-                    <InputLabel forInput="email" value="Email" />
-
                     <TextInput
+                        placeholder={"Username"}
+                        type="text"
+                        name="username"
+                        value={data.username}
+                        className="mt-1 block w-full"
+                        handleChange={onHandleChange}
+                        required
+                    />
+
+                    <InputError message={errors.username} className="mt-2" />
+                </div>
+                <div className="mt-4">
+                    <TextInput
+                        placeholder={"Alamat Email"}
                         type="email"
                         name="email"
                         value={data.email}
                         className="mt-1 block w-full"
-                        autoComplete="username"
                         handleChange={onHandleChange}
                         required
                     />
@@ -72,9 +80,8 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel forInput="password" value="Password" />
-
                     <TextInput
+                        placeholder={"Password"}
                         type="password"
                         name="password"
                         value={data.password}
@@ -88,12 +95,8 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel
-                        forInput="password_confirmation"
-                        value="Confirm Password"
-                    />
-
                     <TextInput
+                        placeholder={"Konfirmasi password"}
                         type="password"
                         name="password_confirmation"
                         value={data.password_confirmation}
@@ -116,7 +119,7 @@ export default function Register() {
                         Sudah punya akun
                     </Link>
 
-                    <PrimaryButton className="ml-4" processing={processing}>
+                    <PrimaryButton className="ml-4 " processing={processing}>
                         Register
                     </PrimaryButton>
                 </div>

@@ -17,6 +17,7 @@ export default function ErrorModal({ active, title, error }) {
                 type="checkbox"
                 id="my-modal"
                 className="modal-toggle"
+                onChange={() => ""}
             />
             <div className="modal">
                 <div className="modal-box">

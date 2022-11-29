@@ -8,6 +8,9 @@ import InputSelect from "./InputSelect";
 import InputText from "./InputText";
 import DropZoneComponent from "./DropZoneComponent";
 import { Link } from "@inertiajs/inertia-react";
+import axios from "axios";
+import { dataURItoBlob } from "@/utils/dataURItoBlob";
+import { uploadImageAfterCrop } from "@/utils/uploadImageAfterCrop";
 
 const SideBar = ({ categories, content, blog, pathButton }) => {
     const [showSidebar, setShowSidebar] = useState(false);
@@ -16,6 +19,7 @@ const SideBar = ({ categories, content, blog, pathButton }) => {
         category_id: "",
         description: "",
         content: "",
+        cover_url: "",
     });
     useEffect(() => {
         if (blog) {
@@ -29,6 +33,7 @@ const SideBar = ({ categories, content, blog, pathButton }) => {
     }, [content]);
     const [image, setImage] = useState();
     const [imgCrop, setImgCrop] = useState();
+    const [resImg, setResImg] = useState(null);
     function onDrop(file) {
         setImage(URL.createObjectURL(file[0]));
     }
@@ -67,12 +72,13 @@ const SideBar = ({ categories, content, blog, pathButton }) => {
                         placeholder={"Judul"}
                     />
 
-                    {/* {image ? (
+                    {image ? (
                         <div className="">
                             <Cropper
-                                onChange={(e) =>
-                                    console.log(e.getCanvas().toDataURL())
-                                }
+                                aspectRatio={16 / 9}
+                                onChange={(e) => {
+                                    setImgCrop(e);
+                                }}
                                 src={image}
                                 style={{
                                     height: 200,
@@ -81,22 +87,41 @@ const SideBar = ({ categories, content, blog, pathButton }) => {
                             />
 
                             <div className="mx-auto w-fit">
-                                <Link
-                                    method="post"
-                                    href="/upload-image"
-                                    data={{ img: imgCrop }}
+                                <button
+                                    onClick={() => {
+                                        uploadImageAfterCrop(imgCrop, (res) => {
+                                            if (res.success) {
+                                                setImage(null);
+                                                setResImg(res.path.path);
+                                                setBlogData((data) => ({
+                                                    ...data,
+                                                    cover_url: res.path.path,
+                                                }));
+                                            }
+                                        });
+                                    }}
                                     className="px-3 py-2 mr-3 bg-orange-500 text-white rounded-lg"
                                 >
                                     Upload
-                                </Link>
+                                </button>
                                 <button className="px-3 py-2 bg-red-500 text-white rounded-lg">
                                     cancel
                                 </button>
                             </div>
                         </div>
                     ) : (
-                        <DropZoneComponent onDrop={onDrop} />
-                    )} */}
+                        <>
+                            {resImg ? (
+                                <img
+                                    className="w-[60%] my-1 mx-auto"
+                                    src={resImg}
+                                    alt=""
+                                />
+                            ) : (
+                                <DropZoneComponent onDrop={onDrop} />
+                            )}
+                        </>
+                    )}
 
                     <InputSelect
                         value={blogData.category_id}
@@ -126,7 +151,7 @@ const SideBar = ({ categories, content, blog, pathButton }) => {
                         url={pathButton}
                         method={"post"}
                         data={blogData}
-                        title={"Edit"}
+                        title={"Upload"}
                         className="w-20 mt-3 mx-auto"
                     />
                 </div>
