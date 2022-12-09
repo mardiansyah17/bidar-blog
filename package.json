@@ -35,6 +35,7 @@
         "@fortawesome/react-fontawesome": "^0.2.0",
         "@mui/material": "^5.10.12",
         "@mui/styled-engine-sc": "^5.10.6",
+        "aos": "^2.3.4",
         "daisyui": "^2.38.1",
         "draft-js": "^0.11.7",
         "draft-js-export-html": "^1.4.1",

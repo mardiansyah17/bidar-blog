@@ -27,7 +27,8 @@ Route::get('/about', function () {
     return Inertia::render('About');
 })->name('about');
 
-Route::middleware(['auth'])->group(function () {
+
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [UserController::class, 'show']);
     Route::post('/update-profile', [UserController::class, 'update']);
 

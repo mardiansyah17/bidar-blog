@@ -6,6 +6,7 @@ import mardi from "/public/assets/img/mardi.jpg";
 import kanero from "/public/assets/img/kanero.jpeg";
 import yosan from "/public/assets/img/yosan.jpeg";
 import dina from "/public/assets/img/dina.jpeg";
+import andre from "/public/assets/img/andre.jpeg";
 export default function About(props) {
     return (
         <AuthenticatedLayout
@@ -46,12 +47,17 @@ export default function About(props) {
                         <CardContribution
                             img={yosan}
                             name={"Yosandra Saputri"}
-                            nim="21142003"
+                            nim="211420033"
                         />
                         <CardContribution
                             img={dina}
                             name={"Dina pratami putri"}
                             nim="211420056"
+                        />
+                        <CardContribution
+                            img={andre}
+                            name={"Andre Satriawan"}
+                            nim="211420011"
                         />
                     </div>
                 </div>

@@ -5,9 +5,10 @@ import Nav from "@/Components/Nav";
 import { useState } from "react";
 import InputText from "@/Components/InputText";
 import axios from "axios";
+import { Link } from "@inertiajs/inertia-react";
 const ProfileSetting = (props) => {
     const { auth } = props;
-    const [edit, setEdit] = useState(true);
+    const [edit, setEdit] = useState(false);
     const [user, setUser] = useState({
         email: auth.user.email,
         name: auth.user.name,
@@ -45,9 +46,12 @@ const ProfileSetting = (props) => {
                             Simpan
                         </button>
                     )}
-                    <button className="mt-3 ml-2 px-3 py-2 bg-orange-500 text-white rounded-lg">
+                    <Link
+                        hr1f="/forgot-password"
+                        className="mt-3 ml-2 px-3 py-2 bg-orange-500 text-white rounded-lg"
+                    >
                         Ganti password
-                    </button>
+                    </Link>
                 </div>
             </header>
             <div className="mt-5 flex justify-around w-full sm:w-3/4 sm:mx-auto lg:w-2/4 font-medium">
@@ -66,7 +70,7 @@ const ProfileSetting = (props) => {
                     </>
                 ) : (
                     <ul className="flex flex-col items-center w-full space-y-3">
-                        <InputText
+                        {/* <InputText
                             value={user.email}
                             valueHandler={(e) =>
                                 setUser((data) => ({
@@ -74,7 +78,7 @@ const ProfileSetting = (props) => {
                                     email: e.target.value,
                                 }))
                             }
-                        />
+                        /> */}
 
                         <InputText
                             value={user.name}
