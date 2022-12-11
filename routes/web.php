@@ -3,6 +3,7 @@
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -27,7 +28,9 @@ Route::get('/about', function () {
     return Inertia::render('About');
 })->name('about');
 
-
+Route::get('/foo', function () {
+    Artisan::call('storage:link');
+});
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [UserController::class, 'show']);
     Route::post('/update-profile', [UserController::class, 'update']);
@@ -42,7 +45,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/upload-image', function (Request $request) {
         // dd($request->all());
         $path = $request->file('img')->store('post-images');
-        return  response()->json(['path' => "/storage/" . $path], 200);
+        return  response()->json(['path' => "/public/" . $path], 200);
     });
 });
 

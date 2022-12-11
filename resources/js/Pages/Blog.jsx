@@ -5,8 +5,8 @@ import gambar from "/public/assets/img/images/mark.jpg";
 import Nav from "@/Components/Nav";
 export default function Blog(props) {
     const { blog } = props;
+    const { user } = props;
     const { flash } = usePage().props;
-
     useEffect(() => {
         if (flash.success != null) {
             localStorage.removeItem("blog");
@@ -22,7 +22,8 @@ export default function Blog(props) {
                         {blog.title}
                     </h1>
                     <small className="text-xs sm:text-sm lg:text-lg px-10">
-                        <a href="">Muhammad Mardiansyah </a>| 18 November 2022
+                        <a href="">{user.name}</a> |{" "}
+                        {new Date(blog.created_at).toLocaleDateString("id-ID")}
                     </small>
                     <img
                         src={blog.cover_url}

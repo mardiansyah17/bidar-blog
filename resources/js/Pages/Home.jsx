@@ -13,11 +13,11 @@ export default function Home(props) {
                 </div>
                 <div className="flex flex-col  items-center px-3 w-full justify-center basis-full sm:flex-row lg:space-x-20">
                     <Hero />
-                    <img
+                    {/* <img
                         src={decoration1}
                         className="absolute bottom-0 sm:bottom-10 right-0 w-32 sm:w-40 lg:w-52"
                         alt=""
-                    />
+                    /> */}
                 </div>
             </div>
         </AuthenticatedLayout>

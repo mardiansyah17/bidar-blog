@@ -2,13 +2,6 @@ import React from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Nav from "@/Components/Nav";
 import CardBlog from "@/Components/CardBlog";
-import {
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
-    TextField,
-} from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -16,8 +9,15 @@ export default function AllBlog(props) {
     const [categories] = useState(props.categories);
     const [blogs, setBlogs] = useState(props.blogs);
     const [loading, setLoading] = useState(false);
-    function showByCategory(e) {
-        let categorySelected = e.target.value;
+    const [currentCategory, setCurrentCategory] = useState("");
+
+    function categoryHandler(e) {
+        setCurrentCategory(e.target.value);
+        showByCategory(e.target.value);
+    }
+
+    function showByCategory(id) {
+        let categorySelected = id;
         if (categorySelected != "all") {
             const blogByCategory = props.blogs.filter((blog) => {
                 return blog.category_id == categorySelected;
@@ -32,7 +32,7 @@ export default function AllBlog(props) {
         let title = e.target.value;
 
         if (title != "") {
-            const blogByTitlte = props.blogs.filter((blog) => {
+            const blogByTitlte = blogs.filter((blog) => {
                 return String(blog.title)
                     .toLowerCase()
                     .includes(String(title).toLowerCase());
@@ -40,7 +40,7 @@ export default function AllBlog(props) {
 
             setBlogs(blogByTitlte);
         } else {
-            setBlogs(props.blogs);
+            showByCategory(currentCategory);
         }
     }
     useEffect(() => {}, []);
@@ -63,7 +63,8 @@ export default function AllBlog(props) {
                     </div> */}
                     <div className="mb-3 w-full">
                         <select
-                            onChange={showByCategory}
+                            value={currentCategory}
+                            onChange={categoryHandler}
                             className="w-full border-orange-400 rounded-lg focus:border-orange-500 "
                         >
                             <option value="all">Semua kategori</option>

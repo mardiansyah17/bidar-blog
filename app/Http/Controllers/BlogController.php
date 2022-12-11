@@ -20,8 +20,8 @@ class BlogController extends Controller
 {
     public function index()
     {
+        $blog = Blog::with('category')->latest()->get();
 
-        $blog = Blog::all();
         return Inertia::render('AllBlog', [
             'blogs' => $blog,
             'categories' => Category::all()
@@ -33,7 +33,8 @@ class BlogController extends Controller
 
         return Inertia::render('Blog', [
             'blog' => $blog,
-            'route' => ["blog/{blog}"]
+            'user' => $blog->user,
+            // 'creted_at'=>diffo
         ]);
     }
 
