@@ -10,7 +10,7 @@ export default function AllBlog(props) {
     const [blogs, setBlogs] = useState(props.blogs);
     const [loading, setLoading] = useState(false);
     const [currentCategory, setCurrentCategory] = useState("");
-
+    console.log(blogs.length);
     function categoryHandler(e) {
         setCurrentCategory(e.target.value);
         showByCategory(e.target.value);
@@ -40,7 +40,11 @@ export default function AllBlog(props) {
 
             setBlogs(blogByTitlte);
         } else {
-            showByCategory(currentCategory);
+            if (currentCategory != "") {
+                showByCategory(currentCategory);
+            } else {
+                setBlogs(props.blogs);
+            }
         }
     }
     useEffect(() => {}, []);
@@ -50,17 +54,6 @@ export default function AllBlog(props) {
             <Nav />
             <div className="w-full lg:w-4/5 lg:mx-auto px-3 mt-3 flex flex-col items-center sm:items-baseline sm:space-x-3 sm:flex-row ">
                 <div className="flex  w-full">
-                    {/* <div className="mb-3 w-full mr-1">
-                        <select
-                            name=""
-                            className="w-full border-orange-400 rounded-lg focus:border-orange-500 "
-                            id=""
-                        >
-                            <option value="">Urutkan</option>
-                            <option value="">Terbaru</option>
-                            <option value="">Populer</option>
-                        </select>
-                    </div> */}
                     <div className="mb-3 w-full">
                         <select
                             value={currentCategory}
@@ -92,20 +85,26 @@ export default function AllBlog(props) {
                 </div>
             </div>
             <div className="flex flex-wrap justify-center  mt-5 ">
-                {loading ? (
-                    <></>
-                ) : (
+                {blogs.length > 0 ? (
                     <>
-                        {" "}
-                        {blogs.map((blog) => {
-                            return (
-                                <CardBlog
-                                    key={`blogId.${blog.id}`}
-                                    blog={blog}
-                                />
-                            );
-                        })}
+                        {loading ? (
+                            <></>
+                        ) : (
+                            <>
+                                {" "}
+                                {blogs.map((blog) => {
+                                    return (
+                                        <CardBlog
+                                            key={`blogId.${blog.id}`}
+                                            blog={blog}
+                                        />
+                                    );
+                                })}
+                            </>
+                        )}
                     </>
+                ) : (
+                    <h1 className="text-lg font-semibold">Tidak ada blog</h1>
                 )}
             </div>
         </AuthenticatedLayout>

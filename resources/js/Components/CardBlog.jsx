@@ -28,7 +28,7 @@ export default function CardBlog({ blog }) {
                 <h1 className="text-lg leading-5 mt-3 text-center  font-semibolzd mb-3 ">
                     {blog.title}
                 </h1>
-                <p>{blog.description}</p>
+                <p className="text-sm">{blog.description}</p>
                 <div className="flex justify-center  ">
                     <Link
                         href={`/blog/${blog.slug}`}

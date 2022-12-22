@@ -27,6 +27,8 @@ class Blog extends Model
             ]
         ];
     }
+    public  $appends = ['user', 'category', 'coments'];
+
     public function category()
     {
         return    $this->belongsTo(Category::class);
@@ -34,5 +36,22 @@ class Blog extends Model
     public function user()
     {
         return  $this->belongsTo(User::class);
+    }
+    public function getUserAttribute()
+    {
+        return $this->user()->get();
+    }
+    public function getCategoryAttribute()
+    {
+        return $this->category()->get();
+    }
+    public function getComentsAttribute()
+    {
+        return $this->coments()->latest()->get();
+    }
+
+    public function coments()
+    {
+        return $this->hasMany(Coment::class);
     }
 }

@@ -1,4 +1,10 @@
-import { faGears, faUpload, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+    faGears,
+    faPencil,
+    faTrash,
+    faUpload,
+    faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { faSquarePlus } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
@@ -7,10 +13,8 @@ import Button from "./Button";
 import InputSelect from "./InputSelect";
 import InputText from "./InputText";
 import DropZoneComponent from "./DropZoneComponent";
-import { Link } from "@inertiajs/inertia-react";
-import axios from "axios";
-import { dataURItoBlob } from "@/utils/dataURItoBlob";
 import { uploadImageAfterCrop } from "@/utils/uploadImageAfterCrop";
+import axios from "axios";
 
 const SideBar = ({ categories, content, blog, pathButton }) => {
     const [showSidebar, setShowSidebar] = useState(false);
@@ -24,7 +28,8 @@ const SideBar = ({ categories, content, blog, pathButton }) => {
     useEffect(() => {
         if (blog) {
             setBlogData(blog);
-        } else {
+        }
+        if (content != blogData.content) {
             setBlogData((data) => ({
                 ...data,
                 content: content,
@@ -34,6 +39,7 @@ const SideBar = ({ categories, content, blog, pathButton }) => {
     const [image, setImage] = useState();
     const [imgCrop, setImgCrop] = useState();
     const [resImg, setResImg] = useState(null);
+    const [loading, setLoading] = useState(false);
     function onDrop(file) {
         setImage(URL.createObjectURL(file[0]));
     }
@@ -72,53 +78,88 @@ const SideBar = ({ categories, content, blog, pathButton }) => {
                         placeholder={"Judul"}
                     />
 
-                    {image ? (
-                        <div className="">
-                            <Cropper
-                                aspectRatio={16 / 9}
-                                onChange={(e) => {
-                                    setImgCrop(e);
-                                }}
-                                src={image}
-                                style={{
-                                    height: 200,
-                                }}
-                                className={"cropper my-3 mx-7"}
-                            />
-
-                            <div className="mx-auto w-fit">
-                                <button
-                                    onClick={() => {
-                                        uploadImageAfterCrop(imgCrop, (res) => {
-                                            if (res.success) {
-                                                setImage(null);
-                                                setResImg(res.path.path);
-                                                setBlogData((data) => ({
-                                                    ...data,
-                                                    cover_url: res.path.path,
-                                                }));
-                                            }
-                                        });
-                                    }}
-                                    className="px-3 py-2 mr-3 bg-orange-500 text-white rounded-lg"
-                                >
-                                    Upload
-                                </button>
-                                <button className="px-3 py-2 bg-red-500 text-white rounded-lg">
-                                    cancel
-                                </button>
-                            </div>
-                        </div>
+                    {loading ? (
+                        <div className="lds-dual-ring mx-auto "></div>
                     ) : (
                         <>
-                            {resImg ? (
-                                <img
-                                    className="w-[60%] my-1 mx-auto"
-                                    src={resImg}
-                                    alt=""
-                                />
+                            {image ? (
+                                <div className="">
+                                    <Cropper
+                                        aspectRatio={16 / 9}
+                                        onChange={(e) => {
+                                            setImgCrop(e);
+                                        }}
+                                        src={image}
+                                        style={{
+                                            height: 200,
+                                        }}
+                                        className={"cropper my-3 mx-7"}
+                                    />
+
+                                    <div className="mx-auto w-fit">
+                                        <button
+                                            onClick={() => {
+                                                setLoading(true);
+                                                uploadImageAfterCrop(
+                                                    imgCrop,
+                                                    (res) => {
+                                                        if (res.success) {
+                                                            setLoading(false);
+                                                            setImage(null);
+                                                            setResImg(
+                                                                res.path.path
+                                                            );
+                                                            setBlogData(
+                                                                (data) => ({
+                                                                    ...data,
+                                                                    cover_url:
+                                                                        res.path
+                                                                            .path,
+                                                                })
+                                                            );
+                                                        }
+                                                    }
+                                                );
+                                            }}
+                                            className="px-3 py-2 mr-3 bg-orange-500 text-white rounded-lg"
+                                        >
+                                            Upload
+                                        </button>
+                                        <button
+                                            onClick={() => setImage(null)}
+                                            className="px-3 py-2 bg-red-500 text-white rounded-lg"
+                                        >
+                                            cancel
+                                        </button>
+                                    </div>
+                                </div>
                             ) : (
-                                <DropZoneComponent onDrop={onDrop} />
+                                <>
+                                    {resImg ? (
+                                        <div className="relative mt-3">
+                                            <img
+                                                className="w-[60%] my-1 mx-auto"
+                                                src={resImg}
+                                                alt=""
+                                            />
+                                            <FontAwesomeIcon
+                                                onClick={() =>
+                                                    axios
+                                                        .post("/delete-image", {
+                                                            img: resImg,
+                                                        })
+                                                        .then((res) =>
+                                                            setResImg(null)
+                                                        )
+                                                }
+                                                className="absolute top-5 right-[20%]"
+                                                icon={faTrash}
+                                            />
+                                        </div>
+                                    ) : (
+                                        <DropZoneComponent onDrop={onDrop} />
+                                    )}
+                                </>
                             )}
                         </>
                     )}

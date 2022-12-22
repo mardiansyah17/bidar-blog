@@ -58,19 +58,19 @@ export default function Nav({ drawerHandler }) {
                     </label>
                     <ul
                         tabIndex={0}
-                        className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+                        className="  dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
                     >
-                        <li>
+                        <li className="mb-2 border-b border-gray-300 pl-2">
                             <Link href={`/profile`} className="justify-between">
                                 Profile
                             </Link>
                         </li>
-                        <li>
+                        <li className="mb-2 border-b border-gray-300 pl-2">
                             <Link href={`/my-blog/${auth.user.id}`}>
                                 Blog saya
                             </Link>
                         </li>
-                        <li>
+                        <li className="mb-2 border-b border-gray-300 pl-2">
                             <Link as="button" method="post" href="/logout">
                                 Logout
                             </Link>

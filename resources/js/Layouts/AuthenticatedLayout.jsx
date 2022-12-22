@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import DrawerItemMenu from "@/Components/DrawerItemMenu";
 import Button from "@/Components/Button";
-import profile from "/public/assets/img/images/mark.jpg";
+import profile from "/public/assets/img/avatar.jpg";
 import { Link } from "@inertiajs/inertia-react";
 
 export default function Authenticated({ auth, header, children }) {
@@ -28,33 +28,60 @@ export default function Authenticated({ auth, header, children }) {
                     ></label>
                     <div className="flex flex-col  p-4 w-80 bg-base-100 text-base-content">
                         {auth.user ? (
-                            <Link href="/profile" className="flex items-center">
-                                <img
-                                    src={profile}
-                                    className="w-14 h-14 rounded-full mr-3"
-                                    alt=""
+                            <>
+                                <Link
+                                    href="/profile"
+                                    className="flex items-center"
+                                >
+                                    <img
+                                        src={profile}
+                                        className="w-14 h-14 rounded-full mr-3"
+                                        alt=""
+                                    />
+                                    <h2>{auth.user.name}</h2>
+                                </Link>
+                                <DrawerItemMenu
+                                    title="Home"
+                                    routeName={"guest"}
+                                    url="/"
                                 />
-                                <h2>{auth.user.name}</h2>
-                            </Link>
-                        ) : (
-                            <Button url={"/login"} title="Login" />
-                        )}
-                        <DrawerItemMenu
-                            title="Home"
-                            routeName={"guest"}
-                            url="/"
-                        />
 
-                        <DrawerItemMenu
-                            title="Telusuri"
-                            routeName={"all-blog"}
-                            url="/all-blog"
-                        />
-                        <DrawerItemMenu
-                            title="Tentang Kami"
-                            routeName={"about"}
-                            url="/about"
-                        />
+                                <DrawerItemMenu
+                                    title="Blog saya"
+                                    routeName={"my-blog"}
+                                    url={`/my-blog/${auth.user.id}`}
+                                />
+                                <DrawerItemMenu
+                                    title="Tentang Kami"
+                                    routeName={"about"}
+                                    url="/about"
+                                />
+                                <Link
+                                    className={` bg-orange-500 text-slate-200
+           hover:bg-orange-400  py-3 px-2 rounded-lg
+            `}
+                                    method="post"
+                                    as="button"
+                                    href={"/logout"}
+                                >
+                                    Keluar
+                                </Link>
+                            </>
+                        ) : (
+                            <>
+                                <DrawerItemMenu
+                                    title="Telusuri"
+                                    routeName={"all-blog"}
+                                    url="/all-blog"
+                                />
+                                <DrawerItemMenu
+                                    title="Tentang Kami"
+                                    routeName={"about"}
+                                    url="/about"
+                                />
+                                <Button url={"/login"} title="Login" />
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

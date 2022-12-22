@@ -20,7 +20,7 @@ class BlogController extends Controller
 {
     public function index()
     {
-        $blog = Blog::with('category')->latest()->get();
+        $blog = Blog::with('category')->where('is_pending', false)->latest()->get();
 
         return Inertia::render('AllBlog', [
             'blogs' => $blog,
@@ -61,7 +61,7 @@ class BlogController extends Controller
                 'title.min' => 'Judul minimal 5 karakter',
                 'title.max' => 'Judul makksimal 50 karakter',
                 'category_id.required' => "Kategori wajib di pilih",
-                'content.required' => 'Konten tidak boleh di isi',
+                'content.required' => 'Konten tidak boleh kosong',
                 'description.required' => 'Deskripsi tidak boleh kosong',
                 'cover_url.required' => 'Harus upload cover'
             ]
@@ -103,6 +103,7 @@ class BlogController extends Controller
                 'description' => ['required']
             ]
         );
+
         Blog::where('slug', $blog->slug)->update($updateBlog);
         return redirect('/blog/' . $blog->slug);
     }

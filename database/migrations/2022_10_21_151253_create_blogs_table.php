@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('content');
             $table->string('slug')->unique();
+            $table->boolean('is_pending')->default(true);
         });
     }
 

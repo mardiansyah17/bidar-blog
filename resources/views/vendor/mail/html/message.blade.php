@@ -2,7 +2,7 @@
     {{-- Header --}}
     <x-slot:header>
         <x-mail::header :url="config('app.url')">
-            BidarBlog
+            <img style="width: 4rem" src="https://ti-bidar.com/assets/img/logo-bidar-blog.png" alt="">
         </x-mail::header>
     </x-slot:header>
 
